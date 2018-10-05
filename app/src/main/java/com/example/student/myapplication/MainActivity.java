@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.roger.catloadinglibrary.CatLoadingView;
 
 public class MainActivity extends AppCompatActivity {
     EditText mEmail,mPwd;
@@ -24,29 +25,30 @@ public class MainActivity extends AppCompatActivity {
     TextView mNewUser;
     String email,password;
     private FirebaseAuth mAuth;
-    ProgressDialog mProgress;
+    CatLoadingView mView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mView=new CatLoadingView();
+        mView.setText("Loading...");
+        mView.setCanceledOnTouchOutside(false);
         mLogin=(Button)findViewById(R.id.login);
         mNewUser=(TextView)findViewById(R.id.txt_newUser);
         mEmail=(EditText)findViewById(R.id.log_email);
         mPwd=(EditText)findViewById(R.id.log_pwd);
         mAuth = FirebaseAuth.getInstance();
-        mProgress=new ProgressDialog(this);
-        mProgress.setTitle("Loading..");
-        mProgress.setMessage("Please wait..");
-        mProgress.setCanceledOnTouchOutside(false);
+
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //LOGIN
                 login();
-                mProgress.show();
+                mView.show(getSupportFragmentManager(),"");
 
 
             }
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
          }else {
              Toast.makeText(this, "Fill all the fields", Toast.LENGTH_SHORT).show();
          }
-         mProgress.dismiss();
+        // mProgress.dismiss();
+
     }
 }
